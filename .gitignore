@@ -1,0 +1,9 @@
+# Xcode
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+
+# CocooaPods
+Pods/*
+heyapeta.xcworkspace/*
+
+.DS_Store

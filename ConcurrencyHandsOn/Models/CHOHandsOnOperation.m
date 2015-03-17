@@ -33,16 +33,11 @@
 {
     # warning 課題1-1 : タスクとしてスリープ処理を実装せよ
     // スリープ
-    [NSThread sleepForTimeInterval:2.0];
 }
 
 - (void)start
 {
     # warning 課題1-2 : タスクの開始時の状態変更、タスク実行、タスク終了時の状態変更を実装せよ
-    self.isExecuting = YES;
-    [self main];
-    self.isFinished = YES;
-    self.isExecuting = NO;
 }
 
 #pragma mark - NSObject

@@ -70,10 +70,6 @@ static NSInteger OperationCount = 10; // NSOperationの数
 - (void)execOperations
 {
     # warning 課題1-7 : NSOperationQueueにタスクを追加して並列実行せよ
-
-    for(CHOHandsOnOperation *operation in self.operations) {
-        [self.queue addOperation:operation];
-    }
 }
 
 #pragma mark - setter/getter
@@ -82,9 +78,8 @@ static NSInteger OperationCount = 10; // NSOperationの数
 {
     if(!_queue) {
         # warning 課題1-6 : マルチスレッド用NSOperationQueueを生成せよ
-        _queue = [[NSOperationQueue alloc] init];
+
         # warning 課題2 : 最大並列数を2にせよ
-        _queue.maxConcurrentOperationCount = 2;
     }
 
     return _queue;
@@ -102,13 +97,8 @@ static NSInteger OperationCount = 10; // NSOperationの数
             NSNumber *index = [NSNumber numberWithInteger:i];
 
             # warning 課題1-3 : NSOperationを生成し、配列operationsに追加せよ
-            CHOHandsOnOperation *operation = [[CHOHandsOnOperation alloc] init];
 
             # warning 課題1-4 : CHOHandsOnOperationの"isExecuting"と"isFinished"をKVO登録せよ
-            [operation addObserver:self forKeyPath:@"isExecuting" options:NSKeyValueObservingOptionNew context:(__bridge void *) index];
-            [operation addObserver:self forKeyPath:@"isFinished" options:NSKeyValueObservingOptionNew context:(__bridge void *) index];
-
-            [operations addObject:operation];
         }
 
         _operations = [operations copy];
@@ -134,23 +124,6 @@ static NSInteger OperationCount = 10; // NSOperationの数
      * ここはバックグラウンドスレッドで入ってくるが、UIはメインスレッドで行う必要がある
      * performSelectorOnMainThreadメソッドを使うとメインスレッドで実行できる
      */
-    if([keyPath isEqualToString:@"isExecuting"]) {
-        // タスク開始時にローディング開始
-        if(operation.isExecuting) {
-            // バックグラウンドスレッドで入ってくる可能性があるので、メインスレッドで実行
-            [cell performSelectorOnMainThread:@selector(startLoading)
-                                   withObject:nil
-                                waitUntilDone:NO];
-        }
-    } else if([keyPath isEqualToString:@"isFinished"]) {
-        // タスク完了時にローディング停止
-        if(operation.isFinished) {
-            // バックグラウンドスレッドで入ってくる可能性があるので、メインスレッドで実行
-            [cell performSelectorOnMainThread:@selector(stopLoading)
-                                   withObject:nil
-                                waitUntilDone:NO];
-        }
-    }
 }
 
 #pragma mark - collection view deleagete
